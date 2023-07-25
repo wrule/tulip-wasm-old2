@@ -60,3 +60,21 @@ async function init() {
 }
 
 init();
+
+export
+function run(
+  indic_index: number,
+  inputs: number[][],
+  options: number[],
+  outputs_size: number,
+) {
+  const tulipx: TulipX = Global.tulipx_wasm;
+  const size = inputs[0].length;
+  const task = tulipx._push(indic_index, size, 0);
+  inputs.forEach((input, index) => tulipx._set_array(tulipx._inputs(task, index), input));
+  tulipx._set_array(tulipx._options(task), options);
+  const outputs: Float64Array[] = Array<Float64Array>(outputs_size);
+  for (let i = 0; i < outputs_size; ++i)
+    outputs[i] = tulipx._get_array(tulipx._outputs(task, i), size);
+  return outputs;
+}
