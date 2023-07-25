@@ -21,11 +21,11 @@ interface TulipX {
   _options(task_index: number): number;
   _outputs(task_index: number, data_index: number): number;
   _inputs_map(
-    task_index: number, input_index: number, enabled: number,
-    target_index: number, is_inputs: number, data_index: number,
+    task_index: number, input_index: number,
+    enabled: number, target_index: number, is_inputs: number, data_index: number,
   ): void;
   _outputs_offset(task_index: number): number;
   _run(task_index: number): void;
   _run_batch(start_index: number, end_index: number): void;
-  _erase_batch(start_index: number, end_index: number): void;
+  _erase_batch(start_index: number, end_index: number, only_erase: number): void;
 }
