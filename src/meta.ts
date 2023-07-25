@@ -30,3 +30,15 @@ interface TulipX {
   _erase_batch(start_index: number, end_index: number, only_erase: number): void;
   HEAPF64: Float64Array,
 }
+
+export
+function TulipEx(tulipx: TulipX) {
+  const bytes = tulipx.HEAPF64.BYTES_PER_ELEMENT;
+  return {
+    ...tulipx,
+    _set_array: (address: number, array: ArrayLike<number>) =>
+      tulipx.HEAPF64.set(array, address / bytes),
+    _get_array: (address: number, size: number) =>
+      tulipx.HEAPF64.subarray(address / bytes, address / bytes + size),
+  };
+}

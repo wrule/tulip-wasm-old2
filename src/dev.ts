@@ -1,7 +1,10 @@
+import { TulipX } from './meta';
 import tulipx from './tulipx';
 
 async function dev() {
-  const t = await tulipx();
+  const t: TulipX = await tulipx();
+  const a = t.HEAPF64[0];
+  return;
   const list = Array(10000000).fill(0).map(() => Math.random());
   // const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
