@@ -35,7 +35,7 @@ interface TulipX {
 }
 
 export
-async function tulipx_factory(): Promise<TulipX> {
+async function tulipx_factory() {
   const tulipx: TulipX = await get_tulipx();
   const bytes = tulipx.HEAPF64.BYTES_PER_ELEMENT;
   tulipx._set_array = (address: number, array: ArrayLike<number>) =>
