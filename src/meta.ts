@@ -14,7 +14,7 @@ interface Indicator {
 }
 
 export
-interface TulipX {
+interface TulipEx {
   _push(indic_index: number, size: number, start_task: number): number;
   _pop(): void;
   _inputs(task_index: number, data_index: number): number;
@@ -29,6 +29,8 @@ interface TulipX {
   _run_batch(start_index: number, end_index: number): void;
   _erase_batch(start_index: number, end_index: number, only_erase: number): void;
   HEAPF64: Float64Array,
+  _set_array(address: number, array: ArrayLike<number>): void;
+  _get_array(address: number, size: number): Float64Array;
 }
 
 export
