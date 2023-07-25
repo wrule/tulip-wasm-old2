@@ -47,13 +47,13 @@ async function tulipx_factory() {
 }
 
 const tulipx_promise = tulipx_factory();
-let initializing = 0;
+let initializing = false;
 
 export
 async function init() {
   if (Global.tulipx_wasm) return;
-  initializing++;
-  const log = initializing === 1;
+  const log = !initializing;
+  initializing = true;
   log && console.log('initialize tulipx-wasm...');
   Global.tulipx_wasm = await tulipx_promise;
   log && console.log('initialization successful');
