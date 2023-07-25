@@ -1,23 +1,18 @@
-import { TulipX } from './meta';
-import tulipx from './tulipx';
+import { TulipX, init } from './meta';
+import { Global } from './utils';
 
 async function dev() {
-  const t: TulipX = await tulipx();
-  const a = t.HEAPF64[0];
-  return;
+  await init();
+  const tulipx: TulipX = Global.tulipx_wasm;
+  
   const list = Array(10000000).fill(0).map(() => Math.random());
   // const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  const old_time = Date.now();
-  const task = t._push(72, list.length, 0);
-  const input_index = t._inputs(task, 0) / 8;
-  t.HEAPF64.set(list, input_index);
-  t.HEAPF64.set([2], t._options() / 8);
-  t._run(task);
-  const output_index = t._outputs(task, 0) / 8;
-  const result = t.HEAPF64.slice(output_index, output_index + list.length);
-  console.log(Date.now() - old_time);
-  console.log(result.length);
+  const task = tulipx._push(72, list.length, 0);
+  tulipx._set_array(tulipx._inputs(task, 0), list);
+  tulipx._set_array(tulipx._options(task), [2]);
+  tulipx._run(task);
+  const result = tulipx._get_array(tulipx._outputs(task, 0), list.length);
+  console.log(result);
 }
 
 dev();
