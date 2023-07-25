@@ -1,4 +1,5 @@
 import get_tulipx from './tulipx';
+import { Global } from './utils';
 
 export
 interface Indicator {
@@ -44,3 +45,18 @@ async function tulipx_factory() {
     tulipx.HEAPF64.subarray(address / bytes, address / bytes + size);
   return tulipx;
 }
+
+const tulipx_promise = tulipx_factory();
+let initializing = 0;
+
+export
+async function init() {
+  if (Global.tulipx_wasm) return;
+  initializing++;
+  const log = initializing === 1;
+  log && console.log('initialize tulipx-wasm...');
+  Global.tulipx_wasm = await tulipx_promise;
+  log && console.log('initialization successful');
+}
+
+init();
