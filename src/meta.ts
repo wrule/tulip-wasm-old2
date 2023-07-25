@@ -1,3 +1,4 @@
+import get_tulipx from './tulipx';
 
 export
 interface Indicator {
@@ -34,13 +35,12 @@ interface TulipX {
 }
 
 export
-function SomeName(tulipx: TulipX): TulipX {
+async function GetTulipX(): Promise<TulipX> {
+  const tulipx: TulipX = await get_tulipx();
   const bytes = tulipx.HEAPF64.BYTES_PER_ELEMENT;
-  return {
-    ...tulipx,
-    _set_array: (address: number, array: ArrayLike<number>) =>
-      tulipx.HEAPF64.set(array, address / bytes),
-    _get_array: (address: number, size: number) =>
-      tulipx.HEAPF64.subarray(address / bytes, address / bytes + size),
-  };
+  tulipx._set_array = (address: number, array: ArrayLike<number>) =>
+    tulipx.HEAPF64.set(array, address / bytes);
+  tulipx._get_array = (address: number, size: number) =>
+    tulipx.HEAPF64.subarray(address / bytes, address / bytes + size);
+  return tulipx;
 }
