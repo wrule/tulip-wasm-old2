@@ -24,8 +24,8 @@ interface TulipX {
     task_index: number, input_index: number, enabled: number,
     target_index: number, is_inputs: number, data_index: number,
   ): void;
-  _inputs_offset(task_index: number): number;
   _outputs_offset(task_index: number): number;
   _run(task_index: number): void;
   _run_batch(start_index: number, end_index: number): void;
+  _erase_batch(start_index: number, end_index: number): void;
 }
