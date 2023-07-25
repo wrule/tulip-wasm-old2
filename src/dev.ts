@@ -13,6 +13,7 @@ async function dev() {
   tulipx._set_array(tulipx._options(task), [2]);
   tulipx._run(task);
   const result = tulipx._get_array(tulipx._outputs(task, 0), list.length);
+  tulipx._pop();
   console.log(Date.now() - old_time, result.length);
 }
 
