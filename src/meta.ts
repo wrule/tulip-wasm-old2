@@ -14,7 +14,7 @@ interface Indicator {
 }
 
 export
-interface TulipEx {
+interface TulipX {
   _push(indic_index: number, size: number, start_task: number): number;
   _pop(): void;
   _inputs(task_index: number, data_index: number): number;
@@ -34,7 +34,7 @@ interface TulipEx {
 }
 
 export
-function TulipEx(tulipx: TulipX) {
+function SomeName(tulipx: TulipX): TulipX {
   const bytes = tulipx.HEAPF64.BYTES_PER_ELEMENT;
   return {
     ...tulipx,
