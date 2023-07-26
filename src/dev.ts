@@ -9,7 +9,9 @@ async function dev() {
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const a = sequence(() => {
     const a = submit(72, [list], [2]);
-    const b = submit(72, [a.outputs.sma], [2]);
+    console.log(a);
+    const b = submit(72, [a.outputs.sma], [3]);
+    console.log(b);
   });
   console.log(a);
 
