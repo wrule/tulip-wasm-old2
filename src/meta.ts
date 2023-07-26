@@ -147,10 +147,20 @@ function sequence(func: () => void) {
   const tulipx: TulipX = Global.tulipx_wasm;
   func();
   if (tasks.length < 1) throw 'tasks.length';
-  tulipx._run_batch(tasks[0], tasks[tasks.length - 1]);
+  const first_task = tasks[0];
+  const last_task = tasks[tasks.length - 1];
+  tulipx._run_batch(first_task, last_task);
+
+  const outputs = Array(1).fill(0)
+    .map((_, index) => tulipx._get_array(tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
+  const outputs_offset = tulipx._outputs_offset(last_task);
+  outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
+  tulipx._erase_batch(first_task, last_task, 0);
 
   Global.tulipx_sequence_tasks = null;
   Global.tulipx_sequence_size = null;
+
+  return outputs;
 }
 
 export
