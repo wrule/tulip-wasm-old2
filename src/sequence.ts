@@ -1,4 +1,5 @@
 import indicators from './indicators.json';
+import { TulipX } from './meta';
 import { Global } from './utils';
 
 export
@@ -15,8 +16,6 @@ export
 interface Task {
   id: number;
   indic_index: number;
-  inputs_data: Input[],
-  options_data: ArrayLike<number>,
   inputs: { [name: string]: InputMap },
   outputs: { [name: string]: InputMap },
 }
@@ -39,11 +38,37 @@ class Sequence {
     return indicators[this.tasks[this.tasks.length - 1].indic_index].outputs;
   }
 
-  public Push(task: Task) {
+  public Push(
+    indic_index: number,
+    inputs: Input[],
+    options: ArrayLike<number>,
+  ) {
     if (this.size == null)
       this.size =
-        (task.inputs_data.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
+        (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
+    const tulipx: TulipX = Global.tulipx_wasm;
+    const id = tulipx._push(indic_index, this.Size, 0);
+    inputs.forEach((input, index) => {
+      if (is_arraylike(input))
+        tulipx._set_array(tulipx._inputs(id, index), input as ArrayLike<number>);
+      else {
+        const map = input as InputMap;
+        tulipx._inputs_map(id, index, 1, map.target_index, map.is_inputs, map.data_index);
+      }
+    });
+    tulipx._set_array(tulipx._options(id), options);
+    const indic = indicators[indic_index];
+    const task: Task = {
+      id, indic_index,
+      inputs: Object.fromEntries(indic.input_names.map((name, index) => ([name, {
+        target_index: id, is_inputs: 1, data_index: index,
+      }]))),
+      outputs: Object.fromEntries(indic.output_names.map((name, index) => ([name, {
+        target_index: id, is_inputs: 0, data_index: index,
+      }]))),
+    };
     this.tasks.push(task);
+    return task;
   }
 }
 
@@ -53,21 +78,4 @@ function sequence(func: () => void) {
   Global.tulipx_sequence = seq;
   func();
   Global.tulipx_sequence = null;
-}
-
-export
-function submit(
-  indic_index: number,
-  inputs: Input[],
-  options: ArrayLike<number>,
-) {
-  const seq: Sequence = Global.tulipx_sequence;
-  const indic = indicators[indic_index];
-  const task: Task = {
-    id: 0,
-    indic_index, inputs_data: inputs, options_data: options,
-    inputs: Object.fromEntries(indic.input_names.map((name, index) => ([name, {
-      target_index: task, is_inputs: 1, data_index: index,
-    } as InputMap]))),
-  };
 }
