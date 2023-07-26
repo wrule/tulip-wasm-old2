@@ -12,6 +12,7 @@ type Input = ArrayLike<number> | InputMap;
 export
 interface Task {
   id: number;
+  indic_index: number;
   inputs: { [name: string]: InputMap },
   outputs: { [name: string]: InputMap },
 }
