@@ -111,6 +111,17 @@ function submit(
     }
   });
   tulipx._set_array(tulipx._options(task), options);
+  const inputs_data = _docs[indic_index].input_names.map((name, index) => ([name, {
+    target_index: task, is_inputs: 1, data_index: index,
+  }]));
+  const outputs_data = _docs[indic_index].output_names.map((name, index) => ([name, {
+    target_index: task, is_inputs: 0, data_index: index,
+  }]));
+  return {
+    task,
+    inputs: Object.fromEntries(inputs_data),
+    outputs: Object.fromEntries(outputs_data),
+  };
 }
 
 export
