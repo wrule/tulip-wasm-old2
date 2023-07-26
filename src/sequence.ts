@@ -10,14 +10,19 @@ interface InputMap {
 }
 
 export
+interface InputsMap {
+  [name: string]: InputMap;
+}
+
+export
 type Input = ArrayLike<number> | InputMap;
 
 export
 interface Task {
   id: number;
   indic_index: number;
-  inputs: { [name: string]: InputMap },
-  outputs: { [name: string]: InputMap },
+  inputs: InputsMap,
+  outputs: InputsMap,
 }
 
 function is_arraylike(input: Input) {
@@ -36,6 +41,16 @@ class Sequence {
 
   public get Outputs() {
     return indicators[this.tasks[this.tasks.length - 1].indic_index].outputs;
+  }
+
+  private inputs_map(
+    names: string[],
+    target_index: number,
+    is_inputs: number,
+  ): InputsMap {
+    return Object.fromEntries(names.map((name, index) => [name, {
+      target_index, is_inputs, data_index: index,
+    }]));
   }
 
   public Push(
@@ -60,12 +75,8 @@ class Sequence {
     const indic = indicators[indic_index];
     const task: Task = {
       id, indic_index,
-      inputs: Object.fromEntries(indic.input_names.map((name, index) => ([name, {
-        target_index: id, is_inputs: 1, data_index: index,
-      }]))),
-      outputs: Object.fromEntries(indic.output_names.map((name, index) => ([name, {
-        target_index: id, is_inputs: 0, data_index: index,
-      }]))),
+      inputs: this.inputs_map(indic.input_names, id, 1),
+      outputs: this.inputs_map(indic.output_names, id, 0),
     };
     this.tasks.push(task);
     return task;
