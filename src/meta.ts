@@ -69,6 +69,7 @@ function run(
   indic_index: number,
   inputs: ArrayLike<number>[],
   options: ArrayLike<number>,
+  align: boolean | number = false,
 ) {
   const tulipx: TulipX = Global.tulipx_wasm;
   const size = inputs[0].length;
@@ -78,8 +79,10 @@ function run(
   tulipx._run(task);
   const outputs = Array(_docs[indic_index].outputs).fill(0)
     .map((_, index) => tulipx._get_array(tulipx._outputs(task, index), size));
-  outputs.forEach((output) => output.fill(NaN, 0, tulipx._outputs_offset(task)));
+  const outputs_offset = tulipx._outputs_offset(task);
+  outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
   tulipx._pop();
+  if (align !== true) _align(outputs, align === false ? size - outputs_offset : align);
   return outputs;
 }
 
