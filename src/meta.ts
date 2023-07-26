@@ -103,8 +103,14 @@ function submit(
   const tulipx: TulipX = Global.tulipx_wasm;
   const task = tulipx._push(indic_index, size, 0);
   inputs.forEach((input, index) => {
-    tulipx._set_array(tulipx._inputs(task, index), input);
+    if ((input as any).length != null)
+      tulipx._set_array(tulipx._inputs(task, index), input as ArrayLike<number>);
+    else {
+      const map = input as InputMap;
+      tulipx._inputs_map(task, index, 1, map.target_index, map.is_inputs, map.data_index);
+    }
   });
+  tulipx._set_array(tulipx._options(task), options);
 }
 
 export
