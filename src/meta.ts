@@ -76,10 +76,8 @@ function run(
   inputs.forEach((input, index) => tulipx._set_array(tulipx._inputs(task, index), input));
   tulipx._set_array(tulipx._options(task), options);
   tulipx._run(task);
-  const outputs_size = _docs[indic_index].outputs;
-  const outputs: Float64Array[] = Array<Float64Array>(outputs_size);
-  for (let i = 0; i < outputs_size; ++i)
-    outputs[i] = tulipx._get_array(tulipx._outputs(task, i), size);
+  const outputs = Array(_docs[indic_index].outputs).fill(0)
+    .map((_, index) => tulipx._get_array(tulipx._outputs(task, index), size));
   tulipx._pop();
   return outputs;
 }
