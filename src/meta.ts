@@ -76,9 +76,9 @@ function run(
   inputs.forEach((input, index) => tulipx._set_array(tulipx._inputs(task, index), input));
   tulipx._set_array(tulipx._options(task), options);
   tulipx._run(task);
-  const outputs_offset = tulipx._outputs_offset(task);
   const outputs = Array(_docs[indic_index].outputs).fill(0)
     .map((_, index) => tulipx._get_array(tulipx._outputs(task, index), size));
+  outputs.forEach((output) => output.fill(NaN, 0, tulipx._outputs_offset(task)));
   tulipx._pop();
   return outputs;
 }
