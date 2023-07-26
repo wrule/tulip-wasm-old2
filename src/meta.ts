@@ -153,7 +153,7 @@ function sequence(func: () => void) {
   const last_task = tasks[tasks.length - 1];
   tulipx._run_batch(first_task, last_task);
 
-  const outputs = Array(1).fill(Global.tulipx_sequence_outputs)
+  const outputs = Array(Global.tulipx_sequence_outputs).fill(0)
     .map((_, index) => tulipx._get_array(tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
   const outputs_offset = tulipx._outputs_offset(last_task);
   outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
