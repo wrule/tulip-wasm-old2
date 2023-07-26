@@ -1,5 +1,8 @@
 import get_tulipx from './tulipx';
 import { Global } from './utils';
+import _docs from './indicators.json';
+
+export const docs: Indicator[] = _docs;
 
 export
 interface Indicator {
@@ -66,7 +69,6 @@ function run(
   indic_index: number,
   inputs: number[][],
   options: number[],
-  outputs_size: number,
 ) {
   const tulipx: TulipX = Global.tulipx_wasm;
   const size = inputs[0].length;
@@ -74,6 +76,7 @@ function run(
   inputs.forEach((input, index) => tulipx._set_array(tulipx._inputs(task, index), input));
   tulipx._set_array(tulipx._options(task), options);
   tulipx._run(task);
+  const outputs_size = _docs[indic_index].outputs;
   const outputs: Float64Array[] = Array<Float64Array>(outputs_size);
   for (let i = 0; i < outputs_size; ++i)
     outputs[i] = tulipx._get_array(tulipx._outputs(task, i), size);
