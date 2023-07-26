@@ -87,6 +87,27 @@ function run(
 }
 
 export
+interface InputMap {
+  target_index: number;
+  is_inputs: number;
+  data_index: number;
+}
+
+export
+function submit(
+  indic_index: number,
+  size: number,
+  inputs: (ArrayLike<number> | InputMap)[],
+  options: ArrayLike<number>,
+) {
+  const tulipx: TulipX = Global.tulipx_wasm;
+  const task = tulipx._push(indic_index, size, 0);
+  inputs.forEach((input, index) => {
+    tulipx._set_array(tulipx._inputs(task, index), input);
+  });
+}
+
+export
 function start(indic_index: number, options: ArrayLike<number>) {
   const tulipx: TulipX = Global.tulipx_wasm;
   const task = tulipx._push(indic_index, 0, 1);
