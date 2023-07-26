@@ -93,15 +93,26 @@ interface InputMap {
   data_index: number;
 }
 
+function is_arraylike(data: any) {
+  return data.length != null;
+}
+
 export
 function submit(
   indic_index: number,
-  size: number,
   inputs: (ArrayLike<number> | InputMap)[],
   options: ArrayLike<number>,
 ) {
   const tulipx: TulipX = Global.tulipx_wasm;
-  const tasks: number[] = Global.tulipx_tasks;
+  const tasks: number[] = Global.tulipx_sequence_tasks;
+
+  // size连贯处理
+  if (Global.tulipx_sequence_size == null)
+    Global.tulipx_sequence_size =
+      (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
+  const size: number = Global.tulipx_sequence_size;
+  if (size == null) throw '';
+
   const task = tulipx._push(indic_index, size, 0);
   tasks.push(task);
   inputs.forEach((input, index) => {
@@ -126,7 +137,8 @@ function submit(
 
 export
 function sequence(func: () => void) {
-  Global.tulipx_tasks = [];
+  Global.tulipx_sequence_tasks = [];
+  Global.tulipx_sequence_size = null;
   const tasks: number[] = Global.tulipx_tasks;
   const tulipx: TulipX = Global.tulipx_wasm;
   func();
