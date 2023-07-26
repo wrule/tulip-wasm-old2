@@ -101,7 +101,9 @@ function submit(
   options: ArrayLike<number>,
 ) {
   const tulipx: TulipX = Global.tulipx_wasm;
+  const tasks: number[] = Global.tulipx_tasks;
   const task = tulipx._push(indic_index, size, 0);
+  tasks.push(task);
   inputs.forEach((input, index) => {
     if ((input as any).length != null)
       tulipx._set_array(tulipx._inputs(task, index), input as ArrayLike<number>);
@@ -120,6 +122,16 @@ function submit(
       target_index: task, is_inputs: 0, data_index: index,
     }]))),
   };
+}
+
+export
+function sequence(func: () => void) {
+  Global.tulipx_tasks = [];
+  const tasks: number[] = Global.tulipx_tasks;
+  const tulipx: TulipX = Global.tulipx_wasm;
+  func();
+  if (tasks.length < 1) throw '';
+  tulipx._run_batch(tasks[0], tasks[tasks.length - 1]);
 }
 
 export
