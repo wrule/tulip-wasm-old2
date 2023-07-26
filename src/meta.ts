@@ -67,8 +67,8 @@ init();
 export
 function run(
   indic_index: number,
-  inputs: number[][],
-  options: number[],
+  inputs: ArrayLike<number>[],
+  options: ArrayLike<number>,
 ) {
   const tulipx: TulipX = Global.tulipx_wasm;
   const size = inputs[0].length;
