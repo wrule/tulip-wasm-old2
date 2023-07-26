@@ -103,15 +103,18 @@ function submit(
   inputs: (ArrayLike<number> | InputMap)[],
   options: ArrayLike<number>,
 ) {
-  const tulipx: TulipX = Global.tulipx_wasm;
+  // tasks连贯处理
   const tasks: number[] = Global.tulipx_sequence_tasks;
+  if (!tasks) throw 'tasks';
 
   // size连贯处理
   if (Global.tulipx_sequence_size == null)
     Global.tulipx_sequence_size =
       (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
   const size: number = Global.tulipx_sequence_size;
-  if (size == null) throw '';
+  if (size == null) throw 'size';
+
+  const tulipx: TulipX = Global.tulipx_wasm;
 
   const task = tulipx._push(indic_index, size, 0);
   tasks.push(task);
@@ -139,11 +142,15 @@ export
 function sequence(func: () => void) {
   Global.tulipx_sequence_tasks = [];
   Global.tulipx_sequence_size = null;
+  
   const tasks: number[] = Global.tulipx_tasks;
   const tulipx: TulipX = Global.tulipx_wasm;
   func();
   if (tasks.length < 1) throw '';
   tulipx._run_batch(tasks[0], tasks[tasks.length - 1]);
+
+  Global.tulipx_sequence_tasks = null;
+  Global.tulipx_sequence_size = null;
 }
 
 export
