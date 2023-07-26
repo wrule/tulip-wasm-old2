@@ -26,10 +26,12 @@ function is_arraylike(input: Input) {
 
 export
 class Sequence {
+  private size?: number;
   private tasks: Task[] = [];
 
   public get Size() {
-    return 0;
+    if (this.size == null) throw '';
+    return this.size;
   }
 
   public get Outputs() {
@@ -37,6 +39,9 @@ class Sequence {
   }
 
   public Push(task: Task) {
+    if (this.size == null)
+      this.size =
+        (task.inputs_data.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
     this.tasks.push(task);
   }
 }
