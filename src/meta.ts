@@ -127,6 +127,7 @@ function submit(
     }
   });
   tulipx._set_array(tulipx._options(task), options);
+  Global.tulipx_sequence_outputs = _docs[indic_index].outputs;
   return {
     task,
     inputs: Object.fromEntries(_docs[indic_index].input_names.map((name, index) => ([name, {
@@ -142,6 +143,7 @@ export
 function sequence(func: () => void) {
   Global.tulipx_sequence_tasks = [];
   Global.tulipx_sequence_size = null;
+  Global.tulipx_sequence_outputs = null;
   
   const tasks: number[] = Global.tulipx_sequence_tasks;
   const tulipx: TulipX = Global.tulipx_wasm;
@@ -151,7 +153,7 @@ function sequence(func: () => void) {
   const last_task = tasks[tasks.length - 1];
   tulipx._run_batch(first_task, last_task);
 
-  const outputs = Array(1).fill(0)
+  const outputs = Array(1).fill(Global.tulipx_sequence_outputs)
     .map((_, index) => tulipx._get_array(tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
   const outputs_offset = tulipx._outputs_offset(last_task);
   outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
@@ -159,6 +161,7 @@ function sequence(func: () => void) {
 
   Global.tulipx_sequence_tasks = null;
   Global.tulipx_sequence_size = null;
+  Global.tulipx_sequence_outputs = null;
 
   return outputs;
 }
