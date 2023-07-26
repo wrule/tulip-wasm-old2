@@ -143,10 +143,10 @@ function sequence(func: () => void) {
   Global.tulipx_sequence_tasks = [];
   Global.tulipx_sequence_size = null;
   
-  const tasks: number[] = Global.tulipx_tasks;
+  const tasks: number[] = Global.tulipx_sequence_tasks;
   const tulipx: TulipX = Global.tulipx_wasm;
   func();
-  if (tasks.length < 1) throw '';
+  if (tasks.length < 1) throw 'tasks.length';
   tulipx._run_batch(tasks[0], tasks[tasks.length - 1]);
 
   Global.tulipx_sequence_tasks = null;
