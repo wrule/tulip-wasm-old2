@@ -84,7 +84,7 @@ function run(
 }
 
 export
-function _align(outputs: number[][], length: number) {
+function _align(outputs: Float64Array[], length: number) {
   outputs.forEach((output) => {
     const diff = length - output.length;
     if (diff > 0) output.unshift(...Array(diff).fill(NaN));
