@@ -92,6 +92,14 @@ class Sequence {
       indic.output_names.map((name, index) => [name, outputs[index]])
     );
   }
+
+  public RunOnce() {
+    const result = this.Run();
+    const first = this.tasks[0];
+    const last = this.tasks[this.tasks.length - 1];
+    this.tulipx._erase_batch(first.id, last.id, 0);
+    return result;
+  }
 }
 
 export
