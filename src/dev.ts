@@ -2,6 +2,9 @@ import { TulipX, init, run } from './meta';
 import { Global } from './utils';
 import { submit, sequence, Task } from './sequence';
 
+type IsUnion<T, U extends T = T> =
+  T extends unknown ? [U] extends [T] ? false : true : false;
+
 async function dev() {
   await init();
 
