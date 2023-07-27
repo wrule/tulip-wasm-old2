@@ -78,7 +78,8 @@ class Sequence {
     const first = this.tasks[0];
     const last = this.tasks[this.tasks.length - 1];
     this.tulipx._run_batch(first.id, last.id);
-    const outputs_size = indicators[last.indic_index].outputs;
+    const indic = indicators[last.indic_index];
+    const outputs_size = indic.outputs;
     const outputs = Array(outputs_size).fill(0)
       .map((_, index) => this.tulipx._get_array(
         this.tulipx._outputs(last.id, index),
@@ -86,7 +87,10 @@ class Sequence {
       ));
     const outputs_offset = this.tulipx._outputs_offset(last.id);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
-    return outputs;
+    if (outputs.length < 2) return outputs[0];
+    return Object.fromEntries(
+      indic.output_names.map((name, index) => [name, outputs[index]])
+    );
   }
 }
 
