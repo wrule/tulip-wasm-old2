@@ -78,7 +78,6 @@ class Sequence {
     const first = this.tasks[0];
     const last = this.tasks[this.tasks.length - 1];
     this.tulipx._run_batch(first.id, last.id);
-
     const outputs_size = indicators[last.indic_index].outputs;
     const outputs = Array(outputs_size).fill(0)
       .map((_, index) => this.tulipx._get_array(
