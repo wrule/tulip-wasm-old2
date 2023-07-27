@@ -52,9 +52,9 @@ class Sequence {
     if (this.size == null)
       this.size =
         (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
-    
+    if (this.size == null) throw 'size';
     const tulipx: TulipX = Global.tulipx_wasm;
-    const id = tulipx._push(indic_index, this.Size, 0);
+    const id = tulipx._push(indic_index, this.size, 0);
     inputs.forEach((input, index) => {
       if (is_arraylike(input))
         tulipx._set_array(tulipx._inputs(id, index), input as ArrayLike<number>);
