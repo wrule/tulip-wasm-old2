@@ -2,9 +2,6 @@ import { TulipX, init, run } from './meta';
 import { Global } from './utils';
 import { submit, sequence, Task } from './sequence';
 
-type IsUnion<T, U extends T = T> =
-  T extends unknown ? [U] extends [T] ? false : true : false;
-
 async function dev() {
   await init();
 
@@ -20,12 +17,6 @@ async function dev() {
       d: { target_index: 0, is_inputs: 0, data_index: 0 },
     },
   };
-
-  type TaskResult<T extends Task> = IsUnion<keyof T['outputs']> extends true ?
-    { [key in keyof T['outputs']]: Float64Array } :
-    Float64Array;
-
-  let c: TaskResult<typeof a>;
 
 
   // const tulipx: TulipX = Global.tulipx_wasm;

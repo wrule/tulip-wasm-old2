@@ -25,6 +25,15 @@ interface Task {
   outputs: InputsMap,
 }
 
+export
+type IsUnion<T, U extends T = T> =
+  T extends unknown ? [U] extends [T] ? false : true : false;
+
+export
+type TaskResult<T extends Task> = IsUnion<keyof T['outputs']> extends true ?
+  { [key in keyof T['outputs']]: Float64Array } :
+  Float64Array;
+
 function is_arraylike(input: Input) {
   return (input as ArrayLike<number>).length != null;
 }
