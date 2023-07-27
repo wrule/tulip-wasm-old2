@@ -81,7 +81,7 @@ function submit(
   options: ArrayLike<number>,
 ) {
   const seq: Sequence = Global.tulipx_sequence;
-  seq.Push(indic_index, inputs, options);
+  return seq.Push(indic_index, inputs, options);
 }
 
 export
