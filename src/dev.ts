@@ -8,6 +8,26 @@ type IsUnion<T, U extends T = T> =
 async function dev() {
   await init();
 
+  const a = {
+    id: 0, indic_index: 0,
+    inputs: {
+      real1: { target_index: 0, is_inputs: 1, data_index: 0 },
+      real2: { target_index: 0, is_inputs: 1, data_index: 1 },
+      real3: { target_index: 0, is_inputs: 1, data_index: 2 },
+    },
+    outputs: {
+      k: { target_index: 0, is_inputs: 0, data_index: 0 },
+      d: { target_index: 0, is_inputs: 0, data_index: 0 },
+    },
+  };
+
+  type TaskResult<T extends Task> = IsUnion<keyof T['outputs']> extends true ?
+    { [key in keyof T['outputs']]: Float64Array } :
+    Float64Array;
+
+  let c: TaskResult<typeof a>;
+
+
   // const tulipx: TulipX = Global.tulipx_wasm;
   
   // const list = Array(100000).fill(0).map(() => Math.random());
