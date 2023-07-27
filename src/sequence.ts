@@ -31,7 +31,7 @@ function is_arraylike(input: Input) {
 
 export
 class Sequence {
-  private size?: number;
+  private size!: number;
   private tasks: Task[] = [];
   private readonly tulipx: TulipX = Global.tulipx_wasm;
 
@@ -79,10 +79,18 @@ class Sequence {
     const last = this.tasks[this.tasks.length - 1];
     this.tulipx._run_batch(first.id, last.id);
 
-    const outputs = Array(Global.tulipx_sequence_outputs).fill(0)
-      .map((_, index) => this.tulipx._get_array(this.tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
-    const outputs_offset = this.tulipx._outputs_offset(last_task);
+    const outputs_size = indicators[last.indic_index].outputs;
+    const outputs = Array(outputs_size).fill(0)
+      .map(
+        (_, index) =>
+          this.tulipx._get_array(
+            this.tulipx._outputs(last.id, index),
+            this.size,
+          )
+      );
+    const outputs_offset = this.tulipx._outputs_offset(last.id);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
+    return outputs;
   }
 }
 
