@@ -75,9 +75,9 @@ class Sequence {
 
   public Run() {
     if (this.tasks.length < 1) throw 'tasks';
-    const first_task = this.tasks[0];
-    const last_task = this.tasks[this.tasks.length - 1];
-    this.tulipx._run_batch(first_task.id, last_task.id);
+    const first = this.tasks[0];
+    const last = this.tasks[this.tasks.length - 1];
+    this.tulipx._run_batch(first.id, last.id);
 
     const outputs = Array(Global.tulipx_sequence_outputs).fill(0)
       .map((_, index) => this.tulipx._get_array(this.tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
