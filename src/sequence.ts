@@ -39,7 +39,7 @@ function is_arraylike(input: Input) {
 }
 
 export
-class Sequence {
+class Sequence<T extends Task> {
   private size!: number;
   private tasks: Task[] = [];
   private readonly tulipx: TulipX = Global.tulipx_wasm;
@@ -82,7 +82,7 @@ class Sequence {
     return task;
   }
 
-  public Run() {
+  public Run(): TaskResult<T> {
     if (this.tasks.length < 1) throw 'tasks';
     const first = this.tasks[0];
     const last = this.tasks[this.tasks.length - 1];
@@ -117,13 +117,13 @@ function submit(
   inputs: Input[],
   options: ArrayLike<number>,
 ) {
-  const seq: Sequence = Global.tulipx_sequence;
+  const seq: Sequence<Task> = Global.tulipx_sequence;
   return seq.Push(indic_index, inputs, options);
 }
 
 export
-function sequence(func: () => Task) {
-  const seq = new Sequence();
+function sequence<T extends Task>(func: () => T) {
+  const seq = new Sequence<T>();
   Global.tulipx_sequence = seq;
   func();
   Global.tulipx_sequence = null;
