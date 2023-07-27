@@ -54,17 +54,16 @@ class Sequence {
       this.size =
         (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
     if (this.size == null) throw 'size';
-    const tulipx: TulipX = Global.tulipx_wasm;
-    const id = tulipx._push(indic_index, this.size, 0);
+    const id = this.tulipx._push(indic_index, this.size, 0);
     inputs.forEach((input, index) => {
       if (is_arraylike(input))
-        tulipx._set_array(tulipx._inputs(id, index), input as ArrayLike<number>);
+        this.tulipx._set_array(this.tulipx._inputs(id, index), input as ArrayLike<number>);
       else {
         const map = input as InputMap;
-        tulipx._inputs_map(id, index, 1, map.target_index, map.is_inputs, map.data_index);
+        this.tulipx._inputs_map(id, index, 1, map.target_index, map.is_inputs, map.data_index);
       }
     });
-    tulipx._set_array(tulipx._options(id), options);
+    this.tulipx._set_array(this.tulipx._options(id), options);
     const task: Task = {
       id, indic_index,
       inputs: this.inputs_map(indicators[indic_index].input_names, id, 1),
