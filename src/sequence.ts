@@ -80,8 +80,8 @@ class Sequence {
     this.tulipx._run_batch(first_task.id, last_task.id);
 
     const outputs = Array(Global.tulipx_sequence_outputs).fill(0)
-      .map((_, index) => tulipx._get_array(tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
-    const outputs_offset = tulipx._outputs_offset(last_task);
+      .map((_, index) => this.tulipx._get_array(this.tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
+    const outputs_offset = this.tulipx._outputs_offset(last_task);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
   }
 }
