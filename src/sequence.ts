@@ -81,13 +81,10 @@ class Sequence {
 
     const outputs_size = indicators[last.indic_index].outputs;
     const outputs = Array(outputs_size).fill(0)
-      .map(
-        (_, index) =>
-          this.tulipx._get_array(
-            this.tulipx._outputs(last.id, index),
-            this.size,
-          )
-      );
+      .map((_, index) => this.tulipx._get_array(
+        this.tulipx._outputs(last.id, index),
+        this.size,
+      ));
     const outputs_offset = this.tulipx._outputs_offset(last.id);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
     return outputs;
