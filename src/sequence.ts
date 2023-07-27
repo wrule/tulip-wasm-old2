@@ -72,6 +72,18 @@ class Sequence {
     this.tasks.push(task);
     return task;
   }
+
+  public Run() {
+    if (this.tasks.length < 1) throw 'tasks';
+    const first_task = this.tasks[0];
+    const last_task = this.tasks[this.tasks.length - 1];
+    this.tulipx._run_batch(first_task.id, last_task.id);
+
+    const outputs = Array(Global.tulipx_sequence_outputs).fill(0)
+      .map((_, index) => tulipx._get_array(tulipx._outputs(last_task, index), Global.tulipx_sequence_size));
+    const outputs_offset = tulipx._outputs_offset(last_task);
+    outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
+  }
 }
 
 export
