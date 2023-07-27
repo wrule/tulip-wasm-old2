@@ -1,11 +1,24 @@
 import { TulipX, init, run } from './meta';
 import { Global } from './utils';
-import { submit, sequence } from './sequence';
+import { submit, sequence, Task } from './sequence';
 
 async function dev() {
   await init();
 
-  console.log('你好，世界');
+  const a = {
+    k: 123,
+    d: 456,
+  };
+
+  type UnionToIntersection<U> = 
+  (U extends any ? (k: U)=>void : never) extends ((k: infer I)=>void) ? I : never
+
+  type IsUnion<T, U extends T = T> =
+    T extends unknown ? [U] extends [T] ? false : true : false;
+
+  type x = IsUnion<keyof typeof a> extends true ? number : boolean;
+
+
 
   // const tulipx: TulipX = Global.tulipx_wasm;
   
