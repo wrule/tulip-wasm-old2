@@ -34,15 +34,6 @@ class Sequence {
   private size?: number;
   private tasks: Task[] = [];
 
-  public get Size() {
-    if (this.size == null) throw '';
-    return this.size;
-  }
-
-  public get Outputs() {
-    return indicators[this.tasks[this.tasks.length - 1].indic_index].outputs;
-  }
-
   private inputs_map(
     names: string[],
     target_index: number,
