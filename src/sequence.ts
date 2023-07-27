@@ -107,4 +107,5 @@ function sequence(func: () => void) {
   Global.tulipx_sequence = seq;
   func();
   Global.tulipx_sequence = null;
+  return seq;
 }

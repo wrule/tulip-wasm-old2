@@ -1,5 +1,6 @@
-import { TulipX, init, run, submit,sequence } from './meta';
+import { TulipX, init, run } from './meta';
 import { Global } from './utils';
+import { submit, sequence } from './sequence';
 
 async function dev() {
   await init();
@@ -7,13 +8,11 @@ async function dev() {
   
   // const list = Array(10000000).fill(0).map(() => Math.random());
   const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const a = sequence(() => {
+  const seq = sequence(() => {
     const a = submit(72, [list], [2]);
-    console.log(a);
-    const b = submit(72, [a.outputs.sma], [3]);
-    console.log(b);
+    submit(72, [a.outputs.sma], [3]);
   });
-  console.log(a);
+  console.log(seq.Run());
 
   return;
   // const list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
