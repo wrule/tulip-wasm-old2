@@ -82,7 +82,7 @@ class Sequence<T extends Task> {
     return task;
   }
 
-  public Run(): TaskResult<T> {
+  public Run() {
     if (this.tasks.length < 1) throw 'tasks';
     const first = this.tasks[0];
     const last = this.tasks[this.tasks.length - 1];
@@ -96,10 +96,10 @@ class Sequence<T extends Task> {
       ));
     const outputs_offset = this.tulipx._outputs_offset(last.id);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
-    if (outputs.length < 2) return outputs[0];
+    if (outputs.length < 2) return outputs[0] as TaskResult<T>;
     return Object.fromEntries(
       indic.output_names.map((name, index) => [name, outputs[index]])
-    );
+    ) as TaskResult<T>;
   }
 
   public RunOnce() {
