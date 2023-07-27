@@ -61,6 +61,7 @@ class Sequence {
     if (this.size == null)
       this.size =
         (inputs.find((input) => is_arraylike(input)) as ArrayLike<number>)?.length;
+    
     const tulipx: TulipX = Global.tulipx_wasm;
     const id = tulipx._push(indic_index, this.Size, 0);
     inputs.forEach((input, index) => {
@@ -72,11 +73,10 @@ class Sequence {
       }
     });
     tulipx._set_array(tulipx._options(id), options);
-    const indic = indicators[indic_index];
     const task: Task = {
       id, indic_index,
-      inputs: this.inputs_map(indic.input_names, id, 1),
-      outputs: this.inputs_map(indic.output_names, id, 0),
+      inputs: this.inputs_map(indicators[indic_index].input_names, id, 1),
+      outputs: this.inputs_map(indicators[indic_index].output_names, id, 0),
     };
     this.tasks.push(task);
     return task;
