@@ -1,6 +1,6 @@
-import indicators from './indicators.json';
 import { TulipX } from './meta';
 import { Global } from './utils';
+import indicators from './indicators.json';
 
 export
 interface InputMap {
