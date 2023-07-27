@@ -75,6 +75,16 @@ class Sequence {
 }
 
 export
+function submit(
+  indic_index: number,
+  inputs: Input[],
+  options: ArrayLike<number>,
+) {
+  const seq: Sequence = Global.tulipx_sequence;
+  seq.Push(indic_index, inputs, options);
+}
+
+export
 function sequence(func: () => void) {
   const seq = new Sequence();
   Global.tulipx_sequence = seq;
