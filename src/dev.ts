@@ -12,7 +12,7 @@ async function dev() {
   const seq = sequence(() => {
     const a = submit(72, [list], [2]);
     const b = submit(72, [a.outputs.sma], [3]);
-    submit(72, [b.outputs.sma], [3]);
+    return submit(72, [b.outputs.sma], [3]);
   });
   const result = seq.Run();
   console.log(Date.now() - old_time, result.length);

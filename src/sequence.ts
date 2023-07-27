@@ -113,7 +113,7 @@ function submit(
 }
 
 export
-function sequence(func: () => void) {
+function sequence(func: () => Task) {
   const seq = new Sequence();
   Global.tulipx_sequence = seq;
   func();
