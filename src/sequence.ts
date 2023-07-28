@@ -96,10 +96,10 @@ class Sequence<T extends Task> {
       ));
     const outputs_offset = this.tulipx._outputs_offset(last.id);
     outputs.forEach((output) => output.fill(NaN, 0, outputs_offset));
-    if (outputs.length < 2) return outputs[0] as TaskResult<T>;
+    if (outputs.length < 2) return outputs[0] as Result<T['outputs']>;
     return Object.fromEntries(
       indic.output_names.map((name, index) => [name, outputs[index]])
-    ) as TaskResult<T>;
+    ) as Result<T['outputs']>;
   }
 
   public RunOnce() {
