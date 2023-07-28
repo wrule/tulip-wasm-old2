@@ -30,8 +30,8 @@ type IsUnion<T, U extends T = T> =
   T extends unknown ? [U] extends [T] ? false : true : false;
 
 export
-type TaskResult<T extends Task> = IsUnion<keyof T['outputs']> extends true ?
-  { [key in keyof T['outputs']]: Float64Array } :
+type Result<T extends InputsMap> = IsUnion<keyof T> extends true ?
+  { [key in keyof T]: Float64Array } :
   Float64Array;
 
 function is_arraylike(input: Input) {
