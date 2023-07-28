@@ -39,7 +39,7 @@ function is_arraylike(input: Input) {
 }
 
 export
-class Sequence<T extends Task> {
+class Sequence<T extends Task = Task> {
   private size!: number;
   private tasks: Task[] = [];
   private readonly tulipx: TulipX = Global.tulipx_wasm;
@@ -117,7 +117,7 @@ function submit(
   inputs: Input[],
   options: ArrayLike<number>,
 ) {
-  const seq: Sequence<Task> = Global.tulipx_sequence;
+  const seq: Sequence = Global.tulipx_sequence;
   return seq.Push(indic_index, inputs, options);
 }
 
